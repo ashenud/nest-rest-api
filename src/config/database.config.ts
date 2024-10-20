@@ -85,12 +85,18 @@ export default registerAs<DatabaseConfig>('database', () => {
     name: process.env.DATABASE_NAME,
     password: process.env.DATABASE_PASSWORD,
     username: process.env.DATABASE_USERNAME,
-    synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
+    synchronize: process.env.DATABASE_SYNCHRONIZE
+      ? process.env.DATABASE_SYNCHRONIZE === 'true'
+      : false,
     maxConnections: process.env.DATABASE_MAX_CONNECTIONS
       ? parseInt(process.env.DATABASE_MAX_CONNECTIONS, 10)
       : 100,
-    sslEnabled: process.env.DATABASE_SSL_ENABLED === 'true',
-    rejectUnauthorized: process.env.DATABASE_REJECT_UNAUTHORIZED === 'true',
+    sslEnabled: process.env.DATABASE_SSL_ENABLED
+      ? process.env.DATABASE_SSL_ENABLED === 'true'
+      : false,
+    rejectUnauthorized: process.env.DATABASE_REJECT_UNAUTHORIZED
+      ? process.env.DATABASE_REJECT_UNAUTHORIZED === 'true'
+      : false,
     ca: process.env.DATABASE_CA,
     key: process.env.DATABASE_KEY,
     cert: process.env.DATABASE_CERT,
