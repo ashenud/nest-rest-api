@@ -1,20 +1,17 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
 import {
-  IsBoolean,
   IsEmail,
   IsEnum,
   IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
-import { ToLowerCase } from 'src/decorators/transform.decorators';
 import { RoleType } from 'src/constants/role.type';
-import { AbstractDto } from 'src/common/dto/abstract.dto';
+import { ToLowerCase } from 'src/decorators/transform.decorators';
 
-export class CreateUserDto extends AbstractDto {
+export class CreateUserDto {
   @ApiPropertyOptional({ example: 'john.d@example.com', type: String })
-  @Transform(ToLowerCase)
+  @ToLowerCase()
   @IsEmail()
   email: string;
 
@@ -24,20 +21,18 @@ export class CreateUserDto extends AbstractDto {
 
   @ApiPropertyOptional()
   @IsEnum(RoleType)
-  role: number;
+  role: RoleType;
 
   @ApiPropertyOptional({ example: 'John', type: String })
   @IsOptional()
+  @IsString()
   firstName?: string | null;
 
   @ApiPropertyOptional({ example: 'Doe', type: String })
   @IsOptional()
+  @IsString()
   lastName?: string | null;
 
   @IsString()
   avatar?: string | null;
-
-  @ApiPropertyOptional()
-  @IsBoolean()
-  isActive: boolean;
 }

@@ -1,8 +1,10 @@
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AllConfigType } from './config/config.type';
+import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +17,8 @@ async function bootstrap() {
       exclude: ['/'],
     },
   );
+
+  app.useGlobalPipes(new ValidationPipe(validationOptions));
 
   const config = new DocumentBuilder()
     .setTitle('Cats example')
