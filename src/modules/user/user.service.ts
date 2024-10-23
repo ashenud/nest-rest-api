@@ -3,7 +3,7 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { generateHash } from 'src/common/utils';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -17,8 +17,7 @@ export class UserService {
     let password: string | undefined = undefined;
 
     if (createUserDto.password) {
-      const salt = await bcrypt.genSalt();
-      password = await bcrypt.hash(createUserDto.password, salt);
+      password = generateHash(createUserDto.password);
     }
 
     createUserDto.password = password;
@@ -29,6 +28,7 @@ export class UserService {
       const userObject = await this.userRepository.findByEmail(
         createUserDto.email,
       );
+
       if (userObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
