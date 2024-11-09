@@ -4,6 +4,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { generateHash } from 'src/common/utils';
+import { FindOptionsWhere } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -54,6 +55,10 @@ export class UserService {
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
+  }
+
+  findOneBy(findData: FindOptionsWhere<User>): Promise<User | null> {
+    return this.userRepository.findOneBy(findData);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

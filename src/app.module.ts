@@ -10,6 +10,7 @@ import databaseConfig from './config/database.config';
 import { TypeOrmConfigService } from './database/typeorm.config.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserModule } from './modules/user/user.module';
         return new DataSource(options).initialize();
       },
     }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     UserModule,
     AuthModule,
   ],

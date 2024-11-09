@@ -21,10 +21,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe(validationOptions));
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('Nest Rest API')
+    .setDescription('The Nest Rest API description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addTag('nest-rest')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
 

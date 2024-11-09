@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RoleSerializerInterceptor } from 'src/interceptors/role-serializer.interceptor';
+import { JwtAuthGuard } from '../auth/guards/jwt.auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -17,6 +19,7 @@ import { UserService } from './user.service';
 
 @Controller('users')
 @ApiTags('users')
+@UseGuards(JwtAuthGuard)
 @UseInterceptors(RoleSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}

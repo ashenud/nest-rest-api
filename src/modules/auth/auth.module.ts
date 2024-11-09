@@ -8,13 +8,14 @@ import { User } from '../user/entities/user.entity';
 import { UserRepository } from '../user/user.repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
-      imports: [ConfigModule], // Ensure ConfigModule is available
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService<AllConfigType>) => ({
         secret: configService.get('auth.secret', { infer: true }),
@@ -24,8 +25,7 @@ import { AuthService } from './auth.service';
       }),
     }),
   ],
-
   controllers: [AuthController],
-  providers: [AuthService, UserRepository],
+  providers: [AuthService, JwtStrategy, UserRepository],
 })
 export class AuthModule {}
