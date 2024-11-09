@@ -3,6 +3,7 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { UUID } from 'crypto';
 import { generateHash } from 'src/common/utils';
 import { FindOptionsWhere } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -49,23 +50,23 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: UUID): Promise<User | null> {
+    return this.userRepository.findOneBy({ id });
   }
 
-  findOneBy(findData: FindOptionsWhere<User>): Promise<User | null> {
-    return this.userRepository.findOneBy(findData);
+  findOneBy(findByData: FindOptionsWhere<User>): Promise<User | null> {
+    return this.userRepository.findOneBy(findByData);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: UUID, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
+  remove(id: UUID) {
     return `This action removes a #${id} user`;
   }
 }
