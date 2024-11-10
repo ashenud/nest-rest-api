@@ -20,15 +20,19 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { RoleType } from 'src/constants/role.type';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('users')
 @ApiTags('users')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RoleGuard)
 @UseInterceptors(RoleSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Roles(RoleType.ADMIN)
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
   }
