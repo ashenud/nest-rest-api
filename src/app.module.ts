@@ -12,6 +12,7 @@ import { TypeOrmConfigService } from './database/typeorm.config.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { CompanyModule } from './modules/company/company.module';
 import { EmployeeModule } from './modules/employee/employee.module';
+import { JobRoleModule } from './modules/job-role/job-role.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -32,6 +33,7 @@ import { UserModule } from './modules/user/user.module';
     AuthModule,
     EmployeeModule,
     CompanyModule,
+    JobRoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
