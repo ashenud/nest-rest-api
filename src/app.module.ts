@@ -11,6 +11,7 @@ import { TypeOrmConfigService } from './database/typeorm.config.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { PassportModule } from '@nestjs/passport';
+import { EmployeeModule } from './modules/employee/employee.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PassportModule } from '@nestjs/passport';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     UserModule,
     AuthModule,
+    EmployeeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
