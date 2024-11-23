@@ -1,7 +1,8 @@
 import { Expose } from 'class-transformer';
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { RoleType } from 'src/constants/role.type';
-import { Column, Entity, VirtualColumn } from 'typeorm';
+import { Company } from 'src/modules/company/entities/company.entity';
+import { Column, Entity, OneToMany, VirtualColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User extends AbstractEntity {
@@ -35,4 +36,8 @@ export class User extends AbstractEntity {
       `SELECT CONCAT(${alias}.first_name, ' ', ${alias}.last_name)`,
   })
   fullName?: string;
+
+  @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
+  @OneToMany(() => Company, (company) => company.owner)
+  companies: Company[];
 }
