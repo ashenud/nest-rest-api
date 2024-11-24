@@ -46,15 +46,15 @@ export class CompanyService {
   }
 
   findAll(owner: User): Promise<Company[]> {
-    return this.companyRepository.find({ where: { owner } });
+    return this.companyRepository.find({ where: { owner: { id: owner.id } } });
   }
 
   async findOne(id: UUID, owner: User): Promise<Company> {
     const company = await this.companyRepository.findOne({
-      where: { id, owner },
+      where: { id, owner: { id: owner.id } },
     });
 
-    if (!company) {
+    if (!company) { 
       throw new UnprocessableEntityException({
         status: HttpStatus.UNPROCESSABLE_ENTITY,
         errors: {
