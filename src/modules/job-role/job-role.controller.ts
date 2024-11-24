@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
@@ -15,9 +16,12 @@ import { CreateJobRoleDto } from './dto/create-job-role.dto';
 import { UpdateJobRoleDto } from './dto/update-job-role.dto';
 import { JobRole } from './entities/job-role.entity';
 import { JobRoleService } from './job-role.service';
+import { JwtAuthGuard } from '../auth/guards/jwt.auth.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 
 @Controller('job-roles')
 @ApiTags('Job Roles')
+@UseGuards(JwtAuthGuard, RoleGuard)
 export class JobRoleController {
   constructor(private readonly jobRoleService: JobRoleService) {}
 
