@@ -9,7 +9,7 @@ import { CompanyType } from '../company.type';
 @Unique(['name', 'owner'])
 export class Company extends AbstractEntity {
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
-  @Column({ unique: true, type: 'varchar' })
+  @Column({ type: 'varchar' })
   name: string;
 
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })

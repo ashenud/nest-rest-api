@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   HttpStatus,
   Injectable,
   UnprocessableEntityException,
@@ -42,7 +43,14 @@ export class CompanyService {
       owner,
     });
 
-    return this.companyRepository.save(company);
+    try {
+      return await this.companyRepository.save(company);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('Company name already exists for this owner');
+      }
+      throw error;
+    }
   }
 
   findAll(owner: User): Promise<Company[]> {
@@ -76,7 +84,14 @@ export class CompanyService {
     // Update company details
     Object.assign(company, updateCompanyDto);
 
-    return this.companyRepository.save(company);
+    try {
+      return await this.companyRepository.save(company);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('Company name already exists for this owner');
+      }
+      throw error;
+    }
   }
 
   async remove(id: UUID, owner: User): Promise<void> {
