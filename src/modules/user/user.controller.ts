@@ -5,7 +5,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -14,15 +13,15 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
+import { RoleType } from 'src/constants/role.type';
 import { RoleSerializerInterceptor } from 'src/interceptors/role-serializer.interceptor';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.auth.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
-import { RoleGuard } from '../auth/guards/role.guard';
-import { RoleType } from 'src/constants/role.type';
-import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('users')
 @ApiTags('users')
@@ -45,13 +44,7 @@ export class UserController {
 
   @Get(':id')
   async findOne(@Param('id') id: UUID): Promise<User> {
-    const user = await this.userService.findOne(id);
-
-    if (!user) {
-      throw new NotFoundException();
-    }
-
-    return user;
+    return await this.userService.findOne(id);
   }
 
   @Patch(':id')

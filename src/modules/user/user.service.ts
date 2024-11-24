@@ -1,6 +1,8 @@
 import {
+  ConflictException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { UUID } from 'crypto';
@@ -50,23 +52,46 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  findOne(id: UUID): Promise<User | null> {
-    return this.userRepository.findOneBy({ id });
+  async findOne(id: UUID): Promise<User | null> {
+    const user = this.userRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user;
   }
 
-  findOneBy(findByData: FindOptionsWhere<User>): Promise<User | null> {
+  async findOneBy(findByData: FindOptionsWhere<User>): Promise<User | null> {
     return this.userRepository.findOneBy(findByData);
   }
 
-  update(id: UUID, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: UUID, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+
+    if (updateUserDto.password) {
+      updateUserDto.password = generateHash(updateUserDto.password);
+    }
+
+    // Update user details
+    Object.assign(user, updateUserDto);
+
+    try {
+      return await this.userRepository.save(user);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('User email you entered is already exists');
+      }
+      throw error;
+    }
   }
 
-  remove(id: UUID) {
-    return `This action removes a #${id} user`;
+  async remove(id: UUID) {
+    const user = await this.findOne(id);
+    await this.userRepository.remove(user);
   }
 }
