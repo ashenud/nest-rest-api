@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
@@ -67,6 +68,7 @@ export class EmployeeService {
     const jobRoles = jobRoleIds
       ? await this.jobRoleRepository.findByIds(jobRoleIds)
       : [];
+
     const employee = this.employeeRepository.create({
       ...employeeData,
       user,
@@ -74,7 +76,16 @@ export class EmployeeService {
       jobRoles,
     });
 
-    return this.employeeRepository.save(employee);
+    try {
+      return await this.employeeRepository.save(employee);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException(
+          'User that user are trying to add already exists in this company as a employee',
+        );
+      }
+      throw error;
+    }
   }
 
   findAll(): Promise<Employee[]> {
@@ -126,7 +137,17 @@ export class EmployeeService {
 
     // Update Employee
     Object.assign(employee, updateEmployeeDto);
-    return this.employeeRepository.save(employee);
+
+    try {
+      return await this.employeeRepository.save(employee);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException(
+          'User that user are trying to add already exists in this company as a employee',
+        );
+      }
+      throw error;
+    }
   }
 
   async remove(id: UUID): Promise<void> {
