@@ -9,19 +9,22 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
+import { RoleSerializerInterceptor } from 'src/interceptors/role-serializer.interceptor';
+import { JwtAuthGuard } from '../auth/guards/jwt.auth.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 import { CreateJobRoleDto } from './dto/create-job-role.dto';
 import { UpdateJobRoleDto } from './dto/update-job-role.dto';
 import { JobRole } from './entities/job-role.entity';
 import { JobRoleService } from './job-role.service';
-import { JwtAuthGuard } from '../auth/guards/jwt.auth.guard';
-import { RoleGuard } from '../auth/guards/role.guard';
 
 @Controller('job-roles')
 @ApiTags('Job Roles')
 @UseGuards(JwtAuthGuard, RoleGuard)
+@UseInterceptors(RoleSerializerInterceptor)
 export class JobRoleController {
   constructor(private readonly jobRoleService: JobRoleService) {}
 

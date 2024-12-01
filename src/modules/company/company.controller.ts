@@ -10,10 +10,12 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { RoleSerializerInterceptor } from 'src/interceptors/role-serializer.interceptor';
 import { JwtAuthGuard } from '../auth/guards/jwt.auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { User } from '../user/entities/user.entity';
@@ -25,6 +27,7 @@ import { Company } from './entities/company.entity';
 @Controller('companies')
 @ApiTags('companies')
 @UseGuards(JwtAuthGuard, RoleGuard)
+@UseInterceptors(RoleSerializerInterceptor)
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
