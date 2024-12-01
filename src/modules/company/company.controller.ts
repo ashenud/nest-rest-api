@@ -41,7 +41,7 @@ export class CompanyController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(@CurrentUser() owner: User): Promise<Company[]> {
+  async findAll(@CurrentUser() owner: User): Promise<Company[]> {
     return this.companyService.findAll(owner);
   }
 

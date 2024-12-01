@@ -47,14 +47,19 @@ export class CompanyService {
       return await this.companyRepository.save(company);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException('Company name already exists for this owner');
+        throw new ConflictException(
+          'Company name already exists for this owner',
+        );
       }
       throw error;
     }
   }
 
-  findAll(owner: User): Promise<Company[]> {
-    return this.companyRepository.find({ where: { owner: { id: owner.id } } });
+  async findAll(owner: User): Promise<Company[]> {
+    return await this.companyRepository.find({
+      where: { owner: { id: owner.id } },
+      relations: ['owner'],
+    });
   }
 
   async findOne(id: UUID, owner: User): Promise<Company> {
@@ -62,7 +67,7 @@ export class CompanyService {
       where: { id, owner: { id: owner.id } },
     });
 
-    if (!company) { 
+    if (!company) {
       throw new UnprocessableEntityException({
         status: HttpStatus.UNPROCESSABLE_ENTITY,
         errors: {
@@ -88,7 +93,9 @@ export class CompanyService {
       return await this.companyRepository.save(company);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException('Company name already exists for this owner');
+        throw new ConflictException(
+          'Company name already exists for this owner',
+        );
       }
       throw error;
     }
