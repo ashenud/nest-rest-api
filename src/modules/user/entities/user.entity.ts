@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { RoleType } from 'src/constants/role.type';
 import { Company } from 'src/modules/company/entities/company.entity';
+import { Employee } from 'src/modules/employee/entities/employee.entity';
 import { Column, Entity, OneToMany, VirtualColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -40,4 +41,8 @@ export class User extends AbstractEntity {
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
   @OneToMany(() => Company, (company) => company.owner)
   companies: Company[];
+
+  @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
+  @OneToMany(() => Employee, (employee) => employee.user)
+  employees: Employee[];
 }

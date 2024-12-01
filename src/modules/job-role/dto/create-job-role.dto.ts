@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { UUID } from 'crypto';
-import { SalaryType } from 'src/common/types/salary.type';
+import { SalaryType } from 'src/common/types/job-role-related.type';
 
 export class CreateJobRoleDto {
   @ApiProperty({ example: 'Software Engineer', type: String })
@@ -9,7 +9,10 @@ export class CreateJobRoleDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', type: String })
+  @ApiProperty({
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    type: String,
+  })
   @IsNotEmpty()
   companyId: UUID;
 

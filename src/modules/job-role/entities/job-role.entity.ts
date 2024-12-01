@@ -1,9 +1,10 @@
 import { Expose } from 'class-transformer';
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
-import { SalaryType } from 'src/common/types/salary.type';
+import { SalaryType } from 'src/common/types/job-role-related.type';
 import { RoleType } from 'src/constants/role.type';
 import { Company } from 'src/modules/company/entities/company.entity';
-import { Column, Entity, ManyToOne, Unique } from 'typeorm';
+import { Employee } from 'src/modules/employee/entities/employee.entity';
+import { Column, Entity, ManyToMany, ManyToOne, Unique } from 'typeorm';
 
 @Entity({ name: 'job_roles' })
 @Unique(['name', 'company'])
@@ -25,4 +26,8 @@ export class JobRole extends AbstractEntity {
     onDelete: 'CASCADE',
   })
   company: Company;
+
+  @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
+  @ManyToMany(() => Employee, (employee) => employee.jobRoles)
+  employees: Employee[];
 }

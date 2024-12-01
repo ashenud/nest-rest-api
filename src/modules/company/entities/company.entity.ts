@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { RoleType } from 'src/constants/role.type';
+import { Employee } from 'src/modules/employee/entities/employee.entity';
 import { JobRole } from 'src/modules/job-role/entities/job-role.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Column, Entity, ManyToOne, OneToMany, Unique } from 'typeorm';
@@ -32,4 +33,8 @@ export class Company extends AbstractEntity {
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
   @OneToMany(() => JobRole, (jobRole) => jobRole.company)
   jobRoles: JobRole[];
+
+  @Expose()
+  @OneToMany(() => Employee, (employee) => employee.company)
+  employees: Employee[];
 }
