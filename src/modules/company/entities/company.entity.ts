@@ -4,7 +4,14 @@ import { RoleType } from 'src/constants/role.type';
 import { Employee } from 'src/modules/employee/entities/employee.entity';
 import { JobRole } from 'src/modules/job-role/entities/job-role.entity';
 import { User } from 'src/modules/user/entities/user.entity';
-import { Column, Entity, ManyToOne, OneToMany, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Unique,
+} from 'typeorm';
 import { CompanyType } from '../company.type';
 
 @Entity({ name: 'companies' })
@@ -28,13 +35,14 @@ export class Company extends AbstractEntity {
 
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
   @ManyToOne(() => User, (user) => user.companies, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'owner_id' })
   owner: User;
 
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
   @OneToMany(() => JobRole, (jobRole) => jobRole.company)
   jobRoles: JobRole[];
 
-  @Expose()
+  @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
   @OneToMany(() => Employee, (employee) => employee.company)
   employees: Employee[];
 }

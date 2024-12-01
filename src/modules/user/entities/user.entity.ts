@@ -20,11 +20,11 @@ export class User extends AbstractEntity {
   role: RoleType;
 
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
-  @Column({ nullable: true, type: 'varchar' })
+  @Column({ name: 'first_name', nullable: true, type: 'varchar' })
   firstName?: string | null;
 
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
-  @Column({ nullable: true, type: 'varchar' })
+  @Column({ name: 'last_name', nullable: true, type: 'varchar' })
   lastName?: string | null;
 
   @Expose({ groups: [RoleType.ADMIN, RoleType.USER] })
