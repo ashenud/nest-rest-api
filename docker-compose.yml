@@ -6,7 +6,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NODE_ENV: development
+      NODE_ENV: '${NODE_ENV}'
     working_dir: /app
     volumes:
       - .:/app
