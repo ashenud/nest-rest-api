@@ -23,7 +23,7 @@ export class UserService {
     createUserDto: CreateUserDto,
     request: any,
   ): Promise<User> {
-    // Check if the role is ADMIN and if the current user is authenticated as ADMIN
+    // Check if the role is `ADMIN` and if the current user is authenticated as `ADMIN`
     if (
       createUserDto.role === RoleType.ADMIN &&
       (!request.user || request.user.role !== RoleType.ADMIN)
