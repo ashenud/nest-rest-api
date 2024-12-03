@@ -16,7 +16,7 @@ A **NestJS TypeScript Boilerplate** project with the following features:
 
 -   **Authentication**: Secure JWT-based authentication with Passport.js.
 -   **TypeORM Integration**: Preconfigured ORM with support for migrations and multiple databases.
--   **Swagger Documentation**: Interactive API documentation accessible via `/api-docs`.
+-   **Swagger Documentation**: Interactive API documentation accessible via `/api`.
 -   **Modular Architecture**: Easily extendable project structure.
 -   **Environment Configuration**: Centralized configuration management with `.env` files.
 -   **Preconfigured Scripts**: For development, production, and testing.
@@ -82,7 +82,7 @@ This boilerplate uses JWT-based authentication. To access protected routes:
 src/
 ├── common/        # Common utilities and decorators
 ├── modules/       # Feature modules
-│   ├── auth/          # Authentication module (JWT, Passport)
+│   ├── auth/      # Authentication module (JWT, Passport)
 │   ├── user/      # User module (example)
 │   ├── company/   # Company module (example)
 ├── database/      # TypeORM configuration and entities
@@ -96,25 +96,6 @@ src/
 --------------------
 
 Swagger documentation is auto-generated and available at `/api`. Use it to explore and test API endpoints.
-
-* * * * *
-
-🐳 Docker
----------
-
-A `Dockerfile` and `docker-compose.yml` are included for containerized deployments.
-
-### Build and Run
-
-1.  **Build the image**:
-    ```
-    docker-compose build
-    ```
-
-2.  **Run the container**:
-    ```
-    docker-compose up
-    ```
 
 * * * * *
 
