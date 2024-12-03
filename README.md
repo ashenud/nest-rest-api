@@ -75,6 +75,36 @@ This boilerplate uses JWT-based authentication. To access protected routes:
 
 * * * * *
 
+🐳 Development with Docker
+---------
+
+A `docker-compose.yml` are included for containerized deployments.
+
+### Build and Run
+
+1.  **Configure environment variables if not done previously**:
+    The MySQL container will be built using the values from the .env file. Make sure to set up the .env file before starting the containers.
+    ```
+    cp .env.example .env
+    ```
+
+2.  **Build and Run the container**:
+    ```
+    docker-compose up -d
+    ```
+
+3.  **Install dependencies**:
+    ```
+    docker exec -it nest-rest-api npm install
+    ```
+
+4.  **Run the development server**:
+    ```
+    docker exec -it nest-rest-api npm run start:dev
+    ```
+
+* * * * *
+
 🏗️ Project Structure
 ---------------------
 
