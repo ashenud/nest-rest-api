@@ -75,10 +75,10 @@ This boilerplate uses JWT-based authentication. To access protected routes:
 
 * * * * *
 
-🐳 Development with Docker
+🐳 Docker
 ---------
 
-A `docker-compose.yml` are included for containerized deployments.
+A `docker-compose.yml` is included for containerized deployments.
 
 ### Build and Run
 

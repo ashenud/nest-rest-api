@@ -3,10 +3,12 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
+  Request,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { UUID } from 'crypto';
 import { generateHash } from 'src/common/utils';
+import { RoleType } from 'src/constants/role.type';
 import { FindOptionsWhere } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,7 +19,23 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto,
+    request: any,
+  ): Promise<User> {
+    // Check if the role is `ADMIN` and if the current user is authenticated as `ADMIN`
+    if (
+      createUserDto.role === RoleType.ADMIN &&
+      (!request.user || request.user.role !== RoleType.ADMIN)
+    ) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        errors: {
+          role: 'Unauthenticated users or non-admin users cannot create admin type users.',
+        },
+      });
+    }
+
     let password: string | undefined = undefined;
 
     if (createUserDto.password) {
