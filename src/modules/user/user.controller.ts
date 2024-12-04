@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -25,34 +26,39 @@ import { UserService } from './user.service';
 
 @Controller('users')
 @ApiTags('users')
-@UseGuards(JwtAuthGuard, RoleGuard)
 @UseInterceptors(RoleSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @Roles(RoleType.ADMIN)
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.create(createUserDto);
+  create(
+    @Body() createUserDto: CreateUserDto,
+    @Request() request: any,
+  ): Promise<User> {
+    return this.userService.create(createUserDto, request);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   async findOne(@Param('id') id: UUID): Promise<User> {
     return await this.userService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   update(@Param('id') id: UUID, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
+  @Roles(RoleType.ADMIN)
   remove(@Param('id') id: UUID) {
     return this.userService.remove(id);
   }
